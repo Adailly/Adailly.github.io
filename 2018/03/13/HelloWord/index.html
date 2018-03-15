@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="工具," />
 
 
 
@@ -79,17 +79,18 @@
 
 
 
-<meta name="description" content="开篇一直想做个自己的博客，很久以前就做过一个基础的，后面不知道什么原因就不了了之了。现在有空，就抓紧时间自己做一个了。主要是配置文件的问题，其他的就是按部就班的设置。">
+<meta name="description" content="开篇一直想做个自己的博客，很久以前做过一个基础版的，后面不知道什么原因就不了了之了。现在有空，就抓紧时间自己做一个了。主要是配置文件的问题，如下是一些常用的命令，记录于此方便查看使用。 安装Hexo 前提：已安装node、Git 利用node安装Hexo：npm install -g Hexo-cli 如果npm安装速度较慢或失败，建议把npm改为cnpm  建站 $ hexo init &amp;lt;">
+<meta name="keywords" content="工具">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HelloWord">
+<meta property="og:title" content="Hello Hexo">
 <meta property="og:url" content="http://yoursite.com/2018/03/13/HelloWord/index.html">
 <meta property="og:site_name" content="Adailly blog">
-<meta property="og:description" content="开篇一直想做个自己的博客，很久以前就做过一个基础的，后面不知道什么原因就不了了之了。现在有空，就抓紧时间自己做一个了。主要是配置文件的问题，其他的就是按部就班的设置。">
+<meta property="og:description" content="开篇一直想做个自己的博客，很久以前做过一个基础版的，后面不知道什么原因就不了了之了。现在有空，就抓紧时间自己做一个了。主要是配置文件的问题，如下是一些常用的命令，记录于此方便查看使用。 安装Hexo 前提：已安装node、Git 利用node安装Hexo：npm install -g Hexo-cli 如果npm安装速度较慢或失败，建议把npm改为cnpm  建站 $ hexo init &amp;lt;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-13T14:14:58.000Z">
+<meta property="og:updated_time" content="2018-03-15T13:15:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HelloWord">
-<meta name="twitter:description" content="开篇一直想做个自己的博客，很久以前就做过一个基础的，后面不知道什么原因就不了了之了。现在有空，就抓紧时间自己做一个了。主要是配置文件的问题，其他的就是按部就班的设置。">
+<meta name="twitter:title" content="Hello Hexo">
+<meta name="twitter:description" content="开篇一直想做个自己的博客，很久以前做过一个基础版的，后面不知道什么原因就不了了之了。现在有空，就抓紧时间自己做一个了。主要是配置文件的问题，如下是一些常用的命令，记录于此方便查看使用。 安装Hexo 前提：已安装node、Git 利用node安装Hexo：npm install -g Hexo-cli 如果npm安装速度较慢或失败，建议把npm改为cnpm  建站 $ hexo init &amp;lt;">
 
 
 
@@ -125,7 +126,7 @@
 
 
 
-  <title>HelloWord | Adailly blog</title>
+  <title>Hello Hexo | Adailly blog</title>
   
 
 
@@ -249,7 +250,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">HelloWord</h1>
+          <h1 class="post-title" itemprop="name headline">Hello Hexo</h1>
         
 
         <div class="post-meta">
@@ -299,7 +300,44 @@
       
 
       
-        <h4 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h4><p>一直想做个自己的博客，很久以前就做过一个基础的，后面不知道什么原因就不了了之了。<br>现在有空，就抓紧时间自己做一个了。<br>主要是配置文件的问题，其他的就是按部就班的设置。</p>
+        <h4 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h4><p>一直想做个自己的博客，很久以前做过一个基础版的，后面不知道什么原因就不了了之了。<br>现在有空，就抓紧时间自己做一个了。<br>主要是配置文件的问题，如下是一些常用的命令，记录于此方便查看使用。</p>
+<h4 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h4><ul>
+<li>前提：已安装node、Git</li>
+<li>利用node安装Hexo：<code>npm install -g Hexo-cli</code></li>
+<li>如果npm安装速度较慢或失败，建议把npm改为<a href="https://npm.taobao.org" target="_blank" rel="noopener">cnpm</a></li>
+</ul>
+<h4 id="建站"><a href="#建站" class="headerlink" title="建站"></a>建站</h4><ul>
+<li><code>$ hexo init &lt;folder&gt;</code></li>
+<li><code>$ cd &lt;folder&gt;</code></li>
+<li><code>$ npm/cnpm init</code></li>
+<li>配置 _config.yml</li>
+</ul>
+<h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><ul>
+<li>新建文章：<code>$ hexo new [layout] &lt;title&gt;</code>,如果没有设置 <code>layout</code> 的话，默认使用 _config.yml 中的 <code>default_layout</code> 参数代替。</li>
+<li>生成静态文件：<code>$ hexo generate</code><ul>
+<li>该命令有两个选项：</li>
+<li><code>-d</code>: deploy 文件生成后立即部署网站</li>
+<li><code>-w</code>: watch    监视文件变动  </li>
+<li>简写： <code>$ hexo g (选项)</code></li>
+</ul>
+</li>
+<li>发表草稿：<code>$ hexo publish [layout] &lt;filename&gt;</code></li>
+<li>启动服务器：<code>$ hexo server</code><ul>
+<li>该命令有三个选项：</li>
+<li><code>-p</code>: port     重设端口</li>
+<li><code>-s</code>: static 只使用静态文件</li>
+<li><code>-l</code>: log     启动日记记录，使用覆盖记录格式</li>
+<li>简写: <code>$ hexo s</code></li>
+</ul>
+</li>
+<li>部署网站：<code>$ hexo deploy</code><ul>
+<li>该命令有一个选项</li>
+<li><code>-g</code>: generate    部署之前预先生成静态文件</li>
+<li>简写：<code>$ hexo d</code></li>
+</ul>
+</li>
+<li>清楚缓存：<code>$ hexo clean</code></li>
+</ul>
 
       
     </div>
@@ -314,6 +352,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/工具/" rel="tag"># 工具</a>
+          
+        </div>
       
 
       
@@ -402,6 +446,15 @@
             
 
             
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
 
           </nav>
 
@@ -430,7 +483,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#开篇"><span class="nav-number">1.</span> <span class="nav-text">开篇</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#开篇"><span class="nav-number">1.</span> <span class="nav-text">开篇</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装Hexo"><span class="nav-number">2.</span> <span class="nav-text">安装Hexo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#建站"><span class="nav-number">3.</span> <span class="nav-text">建站</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常用命令"><span class="nav-number">4.</span> <span class="nav-text">常用命令</span></a></li></ol></div>
             
 
           </div>
