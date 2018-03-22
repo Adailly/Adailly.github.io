@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Adailly blog">
 <meta property="og:description" content="Hello一直想做个自己的博客，很久以前做过一个基础版的，后面不知道什么原因就不了了之了。现在有空，就抓紧时间自己做一个了。主要是配置文件的问题，如下是一些常用的命令，记录于此方便查看使用。 Hexo文档Next主题文档 安装Hexo 前提：已安装node、Git 利用node安装Hexo：npm install -g Hexo-cli 如果npm安装速度较慢或失败，建议把npm改为cnpm  建">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-15T13:48:11.000Z">
+<meta property="og:updated_time" content="2018-03-22T03:22:55.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hello Hexo">
 <meta name="twitter:description" content="Hello一直想做个自己的博客，很久以前做过一个基础版的，后面不知道什么原因就不了了之了。现在有空，就抓紧时间自己做一个了。主要是配置文件的问题，如下是一些常用的命令，记录于此方便查看使用。 Hexo文档Next主题文档 安装Hexo 前提：已安装node、Git 利用node安装Hexo：npm install -g Hexo-cli 如果npm安装速度较慢或失败，建议把npm改为cnpm  建">
@@ -336,7 +336,15 @@
 <li>简写：<code>$ hexo d</code></li>
 </ul>
 </li>
-<li>清楚缓存：<code>$ hexo clean</code></li>
+<li><p>清楚缓存：<code>$ hexo clean</code></p>
+</li>
+<li><p>使用sh命令一键部署：<code>sh ~/hexod.sh</code></p>
+<ul>
+<li>进入到<code>~</code>目录</li>
+<li>编写<code>vim hexod.sh</code></li>
+<li>内容：<code>hexo clean &amp;&amp; hexo g -d</code></li>
+</ul>
+</li>
 </ul>
 
       
@@ -358,6 +366,22 @@
       
       
 
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/21/教育/" rel="prev" title="教育">
+                教育 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
       
 
       
@@ -431,7 +455,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
