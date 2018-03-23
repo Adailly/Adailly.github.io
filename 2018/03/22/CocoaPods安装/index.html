@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Adailly blog">
 <meta property="og:description" content="CocoaPods安装检查及安装rvm指令：rvm -v，如没有进行安装rvm。  安装rvm：curl -L get.rvm.io | bash -s stable 指定源：source ~/.rvm/scripts/rvm 查看是否安装成功：rvm -v 列出指定源里面ruby的版本：rvm list known  安装ruby在上一步中找出最新的ruby的版本。  安装ruby：rvm in">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-23T13:42:31.000Z">
+<meta property="og:updated_time" content="2018-03-23T13:46:46.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CocoaPods安装">
 <meta name="twitter:description" content="CocoaPods安装检查及安装rvm指令：rvm -v，如没有进行安装rvm。  安装rvm：curl -L get.rvm.io | bash -s stable 指定源：source ~/.rvm/scripts/rvm 查看是否安装成功：rvm -v 列出指定源里面ruby的版本：rvm list known  安装ruby在上一步中找出最新的ruby的版本。  安装ruby：rvm in">
@@ -314,7 +314,7 @@
 <h4 id="检查更新RubyGems"><a href="#检查更新RubyGems" class="headerlink" title="检查更新RubyGems"></a>检查更新RubyGems</h4><p>RubyGems是一个方便而强大的Ruby程序包管理器，Ruby的第三方插件是用gem方式来管理的，非常容易发布和共享，一个简单的命令就可以安装上第三方的扩展库。</p>
 <ul>
 <li>查看RubyGems的版本：<code>gem -v</code></li>
-<li>更换源：<code>gem sources --add https://gems.ruby-china.org/ --remove https://rubygems.org/</code><br>因为墙的存在，需要更换Ruby的软件源rubygems.org，之前国内使用的<a href="https://ruby.taobao.org，不再建议使用的了，这是因为taobao" target="_blank" rel="noopener">https://ruby.taobao.org，不再建议使用的了，这是因为taobao</a> Gems 源已停止维护，现由 ruby-china 提供镜像服务。  </li>
+<li>更换源：<code>gem sources --add https://gems.ruby-china.org/ --remove https://rubygems.org/</code><br>因为墙的存在，需要更换Ruby的软件源<code>rubygems.org</code>，之前国内使用的 <code>https://ruby.taobao.org</code>，不再建议使用的了，这是因为 <code>taobao Gems</code> 源已停止维护，现由 <code>ruby-china</code> 提供镜像服务。  </li>
 <li>查看源路径是否替换成功：<code>gem sources -l</code><br>确保只有 <code>gems.ruby-china.org</code></li>
 <li>更新到最新版本：<code>gem update --system</code></li>
 <li>查看版本：<code>gem --version</code></li>
