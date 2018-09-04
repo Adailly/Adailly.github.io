@@ -187,6 +187,16 @@
         </li>
       
         
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
@@ -308,8 +318,10 @@
 <li>非对称加密<br>相对对称加密，无需拥有同一组密钥。非对称加密是一种“信息公开的密钥交换协议”。<br>非对称加密需要公开密钥和私有密钥两组密钥，把公开的密钥为公钥，不公开的密钥为私钥。公钥和私钥是配对起来的，使用公钥进行数据加密，只有对应的私钥才能解密，这两个密钥是数学相关的，如果知道了其中一个，并不能计算出另外一个。因此如果公开了一对密钥中的一个，并不会危害到另外一个密钥的安全。<br>如：RSA、DSA </li>
 </ul>
 </li>
-<li><p>iOS中系统封装好的加密函数有：<code>MD5</code>、<code>SHA1~SHA512</code>、<code>DES</code>等，使用系统加密函数，需要先引入头文件<code>#import &lt;CommonCrypto/CommonDigest.h&gt;</code></p>
+<li><p>iOS中系统封装好的加密函数有：<code>MD5</code>、<code>SHA1~SHA512</code>、<code>DES</code>等，使用系统加密函数，需要先引入头文件<code>&lt;CommonCrypto/&gt;</code>，其下有针对不同加密模式的分类，注意选择对应的模式。</p>
 </li>
+<li>单项加密引入：<code>#import &lt;CommonCrypto/CommonDigest.h&gt;</code></li>
+<li>双向加密引入：<code>#import &lt;CommonCrypto/CommonCrypto.h&gt;</code></li>
 </ul>
 <h3 id="iOS系统加密函数的用法"><a href="#iOS系统加密函数的用法" class="headerlink" title="iOS系统加密函数的用法"></a>iOS系统加密函数的用法</h3><p><code>MD5</code>可以产生一个128位的散列值。<code>8bit = 1byte</code>，故生成16字节的散列值。<br>16进制两个字符等于一个字节，故生成的16进制密文为32个字符。<br><code>1byte</code>可以表示的数字范围为<code>0~255</code>，刚好等于<code>2个16进制字符的范围</code>。</p>
 <ul>
