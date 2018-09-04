@@ -229,6 +229,233 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/04/iOS系统加密函数详解：MD5、SHA、DES/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="adailly">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Adailly blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/04/iOS系统加密函数详解：MD5、SHA、DES/" itemprop="url">iOS系统加密函数详解：MD5、SHA、DES</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-04T10:40:12+08:00">
+                2018-09-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="iOS系统加密函数详解"><a href="#iOS系统加密函数详解" class="headerlink" title="iOS系统加密函数详解"></a>iOS系统加密函数详解</h2><h3 id="加密的种类"><a href="#加密的种类" class="headerlink" title="加密的种类"></a>加密的种类</h3><ul>
+<li>单向加密<br>通过对数据进行摘要计算生成密文，密文不可逆推还原，如：MD5、SHA、Base64</li>
+<li><p>双向加密<br>与单向加密相反，可以把密文逆推还原成明文，双向加密又分为对称加密和非对称加密</p>
+<ul>
+<li>对称加密<br>数据使用者必须拥有相同的秘钥才可以进行加密解密。如：DES、3DES、AES、IDEA、RC4、RC5</li>
+<li>非对称加密<br>相对对称加密，无需拥有同一组密钥。非对称加密是一种“信息公开的密钥交换协议”。<br>非对称加密需要公开密钥和私有密钥两组密钥，把公开的密钥为公钥，不公开的密钥为私钥。公钥和私钥是配对起来的，使用公钥进行数据加密，只有对应的私钥才能解密，这两个密钥是数学相关的，如果知道了其中一个，并不能计算出另外一个。因此如果公开了一对密钥中的一个，并不会危害到另外一个密钥的安全。<br>如：RSA、DSA </li>
+</ul>
+</li>
+<li><p>iOS中系统封装好的加密函数有：<code>MD5</code>、<code>SHA1~SHA512</code>、<code>DES</code>等，使用系统加密函数，需要先引入头文件<code>#import &lt;CommonCrypto/CommonDigest.h&gt;</code></p>
+</li>
+</ul>
+<h3 id="iOS系统加密函数的用法"><a href="#iOS系统加密函数的用法" class="headerlink" title="iOS系统加密函数的用法"></a>iOS系统加密函数的用法</h3><p><code>MD5</code>可以产生一个128位的散列值。<code>8bit = 1byte</code>，故生成16字节的散列值。<br>16进制两个字符等于一个字节，故生成的16进制密文为32个字符。<br><code>1byte</code>可以表示的数字范围为<code>0~255</code>，刚好等于<code>2个16进制字符的范围</code>。</p>
+<ul>
+<li><p>需要用到的方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">/** 获取字符串编码后的长度</span><br><span class="line"> * 也可以通过strlen([string UTF8String])获取</span><br><span class="line"> */</span><br><span class="line">- (unsigned int)stringLength:(NSString *)string &#123;</span><br><span class="line">    return (unsigned int)[string lengthOfBytesUsingEncoding:NSUTF8StringEncoding];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> 将加密后的字符转为16进制</span><br><span class="line"></span><br><span class="line"> @param data 生成的密文数据</span><br><span class="line"> @param length 数据的长度</span><br><span class="line"> @return 16进制的密文</span><br><span class="line"> */</span><br><span class="line">- (NSString *)hexStringWithCipherTextData:(unsigned char *)data length:(unsigned int)length &#123;</span><br><span class="line">    // 开辟length*2的字节空间，16进制中2个字符为一个字节</span><br><span class="line">    NSMutableString *hexStr = [NSMutableString stringWithCapacity:length * 2];</span><br><span class="line">    for (int i = 0; i &lt; length; i++) &#123;</span><br><span class="line">        [hexStr appendFormat:@&quot;%02x&quot;, data[i]];</span><br><span class="line">    &#125;</span><br><span class="line">    return hexStr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>MD5</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * MD5加密后的密文长度为128bit，即16字节 = 16 * 8，转为16进制为32字符</span><br><span class="line"> * 16进制：2字符为一字节，16 * 2 = 32</span><br><span class="line"> */</span><br><span class="line">/** MD5加密 */</span><br><span class="line">- (NSString *)MD5:(NSString *)string &#123;</span><br><span class="line">	// 系统提供的密文长度：16字节</span><br><span class="line">    unsigned int outPutLength = CC_MD5_DIGEST_LENGTH;</span><br><span class="line">    // 获取明文编码后的长度</span><br><span class="line">    unsigned int inPutLength = [self stringLength:string];</span><br><span class="line">    // 根据密文的长度，创建一个保存密文的数组</span><br><span class="line">    unsigned char outPutData[outPutLength];</span><br><span class="line">    // 调用系统的方法</span><br><span class="line">    /*extern unsigned char *CC_MD5(const void *data, CC_LONG len, unsigned char *md)*/</span><br><span class="line">    CC_MD5([string UTF8String], inPutLength, outPutData);</span><br><span class="line">    // 返回16进制密文</span><br><span class="line">    return [self hexStringWithCipherTextData:outPutData length:outPutLength];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>SHA SHA的调用和MD5类似</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">/** SHA加密后的字节大小</span><br><span class="line"> *  CC_SHA1的字节长度20，对应的16进制字符数是20*2</span><br><span class="line"> *  CC_SHA256的字节长度分别是32，对应的16进制字符数是32*2</span><br><span class="line"> *  CC_SHA384的字节长度分别是48，对应的16进制字符数是48*2</span><br><span class="line"> *  CC_SHA512的字节长度分别是64，对应的16进制字符数是64*2</span><br><span class="line"> */</span><br><span class="line">/** SHA1加密 */</span><br><span class="line">- (NSString *)SHA1:(NSString *)string &#123;</span><br><span class="line">    unsigned int outPutLength = CC_SHA1_DIGEST_LENGTH;</span><br><span class="line">    unsigned int inPutLength = [self stringLength:string];</span><br><span class="line">    unsigned char outPutData[outPutLength];</span><br><span class="line">    </span><br><span class="line">    CC_MD5([string UTF8String], inPutLength, outPutData);</span><br><span class="line">    </span><br><span class="line">    return [self hexStringWithCipherTextData:outPutData length:outPutLength];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/** SHA256加密 */</span><br><span class="line">- (NSString *)SHA256:(NSString *)string &#123;</span><br><span class="line">    unsigned int outPutLength = CC_SHA256_DIGEST_LENGTH;</span><br><span class="line">    unsigned int inPutLength = [self stringLength:string];</span><br><span class="line">    unsigned char outPutData[outPutLength];</span><br><span class="line">    </span><br><span class="line">    CC_MD5([string UTF8String], inPutLength, outPutData);</span><br><span class="line">    </span><br><span class="line">    return [self hexStringWithCipherTextData:outPutData length:outPutLength];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="DES加密"><a href="#DES加密" class="headerlink" title="DES加密"></a>DES加密</h3><h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><p><code>DES</code>全称为<code>Data Encryption Standard</code>，即数据加密标准，是一种使用密钥加密的块算法，1977年被美国联邦政府的国家标准局确定为联邦资料处理标准（FIPS），并授权在非密级政府通信中使用，随后该算法在国际上广泛流传开来。需要注意的是，在某些文献中，作为算法的DES称为数据加密算法（Data Encryption Algorithm,DEA），已与作为标准的DES区分开来.</p>
+<h4 id="原则"><a href="#原则" class="headerlink" title="原则"></a>原则</h4><p>DES设计中使用了分组密码设计的两个原则：</p>
+<ul>
+<li>混淆（confusion)<br>混淆是使密文的统计特性与密钥的取值之间的关系尽可能复杂化，以使密钥和明文以及密文之间的依赖性对密码分析者来说是无法利用的。</li>
+<li><p>扩散(diffusion)<br>扩散的作用就是将每一位明文的影响尽可能迅速地作用到较多的输出密文位中，以便在大量的密文中消除明文的统计结构，并且使每一位密钥的影响尽可能迅速地扩展到较多的密文位中，以防对密钥进行逐段破译。</p>
+</li>
+<li><p>目的：抗击敌手对密码系统的统计分析。</p>
+</li>
+</ul>
+<h4 id="加密模式"><a href="#加密模式" class="headerlink" title="加密模式"></a>加密模式</h4><p>DES的加密模式有如下几种：</p>
+<ul>
+<li><code>DES/CBC/PKCS5Padding</code> 对应的OC模式：<code>kCCOptionPKCS7Padding</code></li>
+<li><code>DES/ECB/PKCS5Padding</code> 对应的OC模式：<code>kCCOptionPKCS7Padding | kCCOptionECBMode</code></li>
+</ul>
+<p><em>每一段的解释如下：</em></p>
+<ul>
+<li>第一段：加密算法的名称</li>
+<li>第二段：分组加密模式，除了CBC和ECB之外，还可以是NONE/CFB/QFB等。最常用的就是CBC和ECB。<br>DES采用分组加密的方式，将明文按8字节(64位)分组分别加密。如果每个组独立处理，则是ECB。<br>CBC的处理方式是先用初始向量iv对第一组加密，再用第一组的密文座位秘钥对第二组加密，然后依次完成整个加密操作。<br>如果明文中有两个分组的内容相同，ECB会得到完全一样的密文，CBC则不会。</li>
+<li>第三段：最后一个分组的填充方式。大部分情况下，明文并非刚好64位的倍数。对于最后一个分组，如果长度小于64位，则需要用数据填充至64位。<br>PKCS5Padding是常用的填充方式，如果没有指定，默认的方式就是它。<br>ps：DES的有效秘钥长度是56位，但要求秘钥长度是64位(8字节)。3DES则要求24字节。  </li>
+</ul>
+<h4 id="加密函数CCCrypt详解"><a href="#加密函数CCCrypt详解" class="headerlink" title="加密函数CCCrypt详解"></a>加密函数CCCrypt详解</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">CCCryptorStatus CCCrypt(</span><br><span class="line">    CCOperation op,         /* kCCEncrypt, etc. */</span><br><span class="line">    CCAlgorithm alg,        /* kCCAlgorithmAES128, etc. */</span><br><span class="line">    CCOptions options,      /* kCCOptionPKCS7Padding, etc. */</span><br><span class="line">    const void *key,</span><br><span class="line">    size_t keyLength,</span><br><span class="line">    const void *iv,         /* optional initialization vector */</span><br><span class="line">    const void *dataIn,     /* optional per op and alg */</span><br><span class="line">    size_t dataInLength,</span><br><span class="line">    void *dataOut,          /* data RETURNED here */</span><br><span class="line">    size_t dataOutAvailable,</span><br><span class="line">    size_t *dataOutMoved);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>CCCrypt：函数名</li>
+<li>摘要：无状态的, 一次加密或解密的操作。是对这些加密函数的封装：CCCrytorCreate(),CCCryptorUpdate(), CCCryptorFinal(), and CCCryptorRelease()</li>
+<li>op：加解密，枚举值：<code>kCCEncrypt</code>，<code>kCCDecrypt</code></li>
+<li>alg：算法名称，<code>kCCAlgorithmAES128</code>,<code>kCCAlgorithmAES</code>,<code>kCCAlgorithmDES</code>,<code>kCCAlgorithm3DES</code>,<code>kCCAlgorithmCAST</code>,<code>kCCAlgorithmRC4</code>,<code>kCCAlgorithmRC2</code>, <code>kCCAlgorithmBlowfish</code></li>
+<li>options：填充方式，通常是<code>kCCOptionPKCS7Padding</code>，默认分组模式CBC。OC中提供两种模式：<code>kCCOptionPKCS7Padding</code>、<code>kCCOptionECBMode</code></li>
+<li>key：秘钥</li>
+<li>keyLength：秘钥长度，必须和选择的算法相匹配，不同的算法要求的秘钥长度不一样。可选值如下：<ul>
+<li>kCCKeySizeAES128          = 16,</li>
+<li>kCCKeySizeAES192          = 24,</li>
+<li>kCCKeySizeAES256          = 32,</li>
+<li>kCCKeySizeDES             = 8,</li>
+<li>kCCKeySize3DES            = 24,</li>
+<li>kCCKeySizeMinCAST         = 5,</li>
+<li>kCCKeySizeMaxCAST         = 16,</li>
+<li>kCCKeySizeMinRC4          = 1,</li>
+<li>kCCKeySizeMaxRC4          = 512,</li>
+<li>kCCKeySizeMinRC2          = 1,</li>
+<li>kCCKeySizeMaxRC2          = 128,</li>
+<li>kCCKeySizeMinBlowfish     = 8,</li>
+<li>kCCKeySizeMaxBlowfish</li>
+</ul>
+</li>
+<li><p>iv：加密使用的向量参数，CBC模式需要，16字节。ECB模式不需要。<br>原始解释：初始向量，可选类型，用于CBC模式。如果存在，则必须与所选算法的块大小相同。如果选择了CBC模式(由于选项标志中没有任何模式位)，并且没有IV，将使用NULL(所有0)IV。如果使用ECB模式或选择了流密码算法，则忽略此操作。对于声音加密，总是使用随机数据初始化IV。<br>  iv的创建有三种方式：</p>
+<ul>
+<li><code>const Byte iv[] = {1,2,3,4,5,6,7,8};</code></li>
+<li><code>const Byte iv[] = {0,1,2,3,4,5,6,7};</code></li>
+<li><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">NSString *testString = key; // 秘钥</span><br><span class="line">NSData *testData = [testString dataUsingEncoding: NSUTF8StringEncoding];</span><br><span class="line">Byte *iv = (Byte *)[testData bytes];</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>dataIn：加解密的数据，<code>const char *</code>类型，使用字符串的<code>UTF8String</code>进行转换</p>
+</li>
+<li>dataInLength：数据的长度，类型<code>size_t</code></li>
+<li>dataOut：输出的数据，加密解密后的数据写在这里，</li>
+<li>dataOutAvailable：输出数据时需要的可用空间大小。数据缓冲区的大小（字节）</li>
+<li>dataOutMoved：输出数据实际的大小。返回成功后，写入dataOut的字节数。如果由于提供的缓冲区空间不足而返回kCCBufferTooSmall，则在这里返回所需的缓冲区空间。</li>
+<li>result：返回的结果<ul>
+<li>kCCBufferTooSmall： 指示dataOut缓冲区中不充足的空间。在本例中，*dataOutMoved参数将指示完成操作所需的缓冲区大小。操作可以重试，运行时损失最小。</li>
+<li>kCCAlignmentError： 指示数据长度没有正确对齐。这只能对块加密返回，然后只有在解密或加密时禁用填充块时才能返回。</li>
+<li>kCCDecodeError   ： 指示格式不正确的密文或“错误的键”错误;仅在解密操作期间发生。</li>
+<li>kCCSuccess          = 0,</li>
+<li>kCCParamError       = -4300,</li>
+<li>kCCMemoryFailure    = -4302,</li>
+<li>kCCUnimplemented    = -4305,</li>
+<li>kCCOverflow         = -4306,</li>
+<li>kCCRNGFailure       = -4307,</li>
+<li>kCCUnspecifiedError = -4308,</li>
+<li>kCCCallSequenceError= -4309,</li>
+<li>kCCKeySizeError </li>
+</ul>
+</li>
+</ul>
+<h4 id="CCCrypt调用示例"><a href="#CCCrypt调用示例" class="headerlink" title="CCCrypt调用示例"></a>CCCrypt调用示例</h4><ul>
+<li><p>加密</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">//加密</span><br><span class="line">- (NSString *)encryptUseDES:(NSString *)plainText key:(NSString *)key &#123;</span><br><span class="line">    // 密文</span><br><span class="line">    NSString *ciphertext = nil;</span><br><span class="line">    </span><br><span class="line">    // 加密后的数据</span><br><span class="line">    uint8_t *dataOut = NULL;</span><br><span class="line">    size_t dataOutAvailable = 0;</span><br><span class="line">    size_t dataOutMove = 0;</span><br><span class="line">    </span><br><span class="line">    dataOutAvailable = (plainText.length + kCCBlockSizeDES) &amp; ~(kCCBlockSizeDES - 1);</span><br><span class="line">    dataOut = malloc(dataOutAvailable * sizeof(uint8_t));</span><br><span class="line">    // 将已开辟内存空间buffer的首1个字节的值设为0</span><br><span class="line">    memset((void *)dataOut, 0x0, dataOutAvailable);</span><br><span class="line">    </span><br><span class="line">    CCCryptorStatus cryptStatus = CCCrypt(kCCEncrypt, // 操作名称：加密</span><br><span class="line">                                          kCCAlgorithmDES, // 加密算法</span><br><span class="line">                                          kCCOptionPKCS7Padding | kCCOptionECBMode, // 填充模式，ECB模式</span><br><span class="line">                                          key.UTF8String, // 加密秘钥</span><br><span class="line">                                          kCCKeySizeDES, // 秘钥大小，和加密算法一致</span><br><span class="line">                                          NULL, // 初始向量：ECB模式为空</span><br><span class="line">                                          plainText.UTF8String, // 加密的明文</span><br><span class="line">                                          (size_t)plainText.length, // 加密明文的大小</span><br><span class="line">                                          dataOut, // 密文的接受者</span><br><span class="line">                                          dataOutAvailable, // 预计密文的大小</span><br><span class="line">                                          &amp;dataOutMove); // 加密后密文的实际大小</span><br><span class="line">    if (cryptStatus == kCCSuccess) &#123;</span><br><span class="line">        NSData *data = [NSData dataWithBytes:dataOut length:(NSUInteger)dataOutMove];</span><br><span class="line">        // 将data转为16进制字符串</span><br><span class="line">        ciphertext = [self convertDataToHexStr:data];</span><br><span class="line">    &#125;</span><br><span class="line">    return ciphertext;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>解密</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">//解密</span><br><span class="line">- (NSString *)decryptUseDES:(NSString*)cipherText key:(NSString*)key &#123;</span><br><span class="line">    // 将16进制转为data</span><br><span class="line">    NSData* cipherData =[self convertHexStrToData:cipherText];</span><br><span class="line">    </span><br><span class="line">    // 解密后的数据</span><br><span class="line">    uint8_t *dataOut = NULL;</span><br><span class="line">    size_t dataOutAvailable = 0;</span><br><span class="line">    size_t dataOutMove = 0;</span><br><span class="line">    </span><br><span class="line">    dataOutAvailable = (cipherData.length + kCCBlockSizeDES) &amp; ~(kCCBlockSizeDES - 1);</span><br><span class="line">    dataOut = malloc(dataOutAvailable * sizeof(uint8_t));</span><br><span class="line">    // 将已开辟内存空间buffer的首1个字节的值设为0</span><br><span class="line">    memset((void *)dataOut, 0x0, dataOutAvailable);</span><br><span class="line">    </span><br><span class="line">    CCCryptorStatus cryptStatus = CCCrypt(kCCDecrypt,</span><br><span class="line">                                          kCCAlgorithmDES,</span><br><span class="line">                                          kCCOptionPKCS7Padding | kCCOptionECBMode,</span><br><span class="line">                                          key.UTF8String,</span><br><span class="line">                                          kCCKeySizeDES,</span><br><span class="line">                                          NULL,</span><br><span class="line">                                          cipherData.bytes,</span><br><span class="line">                                          (size_t)cipherData.length,</span><br><span class="line">                                          dataOut,</span><br><span class="line">                                          dataOutAvailable,</span><br><span class="line">                                          &amp;dataOutMove);</span><br><span class="line">    NSString* plainText = nil;</span><br><span class="line">    if (cryptStatus == kCCSuccess) &#123;</span><br><span class="line">        NSData* data = [NSData dataWithBytes:dataOut length:(NSUInteger)dataOutMove];</span><br><span class="line">        plainText = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return plainText;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>16进制和NSData相互转换</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">//将NSData转成16进制</span><br><span class="line">- (NSString *)convertDataToHexStr:(NSData *)data &#123;</span><br><span class="line">    if (!data || [data length] == 0) &#123;</span><br><span class="line">        return @&quot;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    NSMutableString *string = [[NSMutableString alloc] init];</span><br><span class="line">    </span><br><span class="line">    [data enumerateByteRangesUsingBlock:^(const void *bytes, NSRange byteRange, BOOL *stop) &#123;</span><br><span class="line">        unsigned char *dataBytes = (unsigned char*)bytes;</span><br><span class="line">        for (NSInteger i = 0; i &lt; byteRange.length; i++) &#123;</span><br><span class="line">            NSString *hexStr = [NSString stringWithFormat:@&quot;%02x&quot;, (dataBytes[i]) &amp; 0xff];</span><br><span class="line">            [string appendString:hexStr];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;];</span><br><span class="line">    return string;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//将16进制字符串转成NSData</span><br><span class="line">- (NSData *)convertHexStrToData:(NSString *)str &#123;</span><br><span class="line">    if (!str || [str length] == 0) &#123;</span><br><span class="line">        return nil;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    NSMutableData *hexData = [[NSMutableData alloc] init];</span><br><span class="line">    NSRange range;</span><br><span class="line">    if ([str length] % 2 == 0) &#123;</span><br><span class="line">        range = NSMakeRange(0, 2);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        range = NSMakeRange(0, 1);</span><br><span class="line">    &#125;</span><br><span class="line">    for (NSInteger i = range.location; i &lt; [str length]; i += 2) &#123;</span><br><span class="line">        unsigned int anInt;</span><br><span class="line">        NSString *hexCharStr = [str substringWithRange:range];</span><br><span class="line">        // 扫描字符串</span><br><span class="line">        NSScanner *scanner = [[NSScanner alloc] initWithString:hexCharStr];</span><br><span class="line">        [scanner scanHexInt:&amp;anInt];</span><br><span class="line">        </span><br><span class="line">        NSData *entity = [[NSData alloc] initWithBytes:&amp;anInt length:1];</span><br><span class="line">        [hexData appendData:entity];</span><br><span class="line">        </span><br><span class="line">        range.location += range.length;</span><br><span class="line">        range.length = 2;</span><br><span class="line">    &#125;</span><br><span class="line">    return hexData;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/31/iOS网络层设计/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1066,13 +1293,13 @@
 <li>如果npm安装速度较慢或失败，建议把npm改为<a href="https://npm.taobao.org" target="_blank" rel="noopener">cnpm</a></li>
 </ul>
 <h4 id="建站"><a href="#建站" class="headerlink" title="建站"></a>建站</h4><ul>
-<li><code>$ hexo init &lt;folder&gt;</code></li>
-<li><code>$ cd &lt;folder&gt;</code></li>
-<li><code>$ npm/cnpm init</code></li>
-<li>配置 _config.yml</li>
+<li><code>$ hexo init &lt;folder&gt;</code>，<code>floder</code>为自定义的项目名称</li>
+<li><code>$ cd &lt;folder&gt;</code>，打开项目</li>
+<li><code>$ npm/cnpm init</code>，执行<code>init</code>操作</li>
+<li>配置 _config.yml，配置相关文件</li>
 </ul>
 <h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><ul>
-<li>新建文章：<code>$ hexo new [layout] &lt;title&gt;</code>,如果没有设置 <code>layout</code> 的话，默认使用 _config.yml 中的 <code>default_layout</code> 参数代替。</li>
+<li>新建文章：<code>$ hexo new [layout] &lt;title&gt;</code>,如果没有设置 <code>layout</code> 的话，默认使用 _config.yml 中的 <code>default_layout</code> 参数代替。<code>title</code>：文章名称</li>
 <li>生成静态文件：<code>$ hexo generate</code><ul>
 <li>该命令有两个选项：</li>
 <li><code>-d</code>: deploy 文件生成后立即部署网站</li>
@@ -1097,11 +1324,12 @@
 </li>
 <li><p>清楚缓存：<code>$ hexo clean</code></p>
 </li>
-<li><p>使用sh命令一键部署：<code>sh ~/hexod.sh</code></p>
-<ul>
+<li><p>使用sh命令一键部署：执行命令<code>sh ~/hexod.sh</code></p>
+</li>
+<li>命令的编写：<ul>
 <li>进入到<code>~</code>目录</li>
-<li>编写<code>vim hexod.sh</code></li>
-<li>内容：<code>hexo clean &amp;&amp; hexo g -d</code></li>
+<li>使用<code>vim hexod.sh</code>编写命令</li>
+<li>命令内容：<code>hexo clean &amp;&amp; hexo g -d</code></li>
 </ul>
 </li>
 </ul>
@@ -1186,7 +1414,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
