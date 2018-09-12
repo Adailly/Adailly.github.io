@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="单例一般来说，在iOS的工程中， 通过的tool一般都会设计成单例，这样能保证在程序运行过程中，程序中只有一个单例对象，方便数据的传输和处理。如果为了扩展此单例类，希望在此基础上增加面向各模块专用的单例方法，该如何处理呢。可以采用的方法有两种：  分类：可以针对各个模块创建对应的分类，并添加方法。缺点是不能继承原有单例的属性。 继承：也可以针对各个模块创建出对应的子类，并添加方法。也可以继承父类的">
+<meta name="description" content="单例一般来说，在iOS的工程中， 通用的tool一般都会设计成单例，这样能保证在程序运行过程中，程序中只有一个单例对象，方便数据的传输和处理。如果为了扩展此单例类，希望在此基础上增加面向各模块专用的单例方法，该如何处理呢。可以采用的方法有两种：  分类：可以针对各个模块创建对应的分类，并添加方法。缺点是不能继承原有单例的属性。 继承：也可以针对各个模块创建出对应的子类，并添加方法。也可以继承父类的">
 <meta name="keywords" content="iOS开发">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS单例的创建和继承">
 <meta property="og:url" content="http://yoursite.com/2018/09/12/iOS单例的创建和继承/index.html">
 <meta property="og:site_name" content="Adailly blog">
-<meta property="og:description" content="单例一般来说，在iOS的工程中， 通过的tool一般都会设计成单例，这样能保证在程序运行过程中，程序中只有一个单例对象，方便数据的传输和处理。如果为了扩展此单例类，希望在此基础上增加面向各模块专用的单例方法，该如何处理呢。可以采用的方法有两种：  分类：可以针对各个模块创建对应的分类，并添加方法。缺点是不能继承原有单例的属性。 继承：也可以针对各个模块创建出对应的子类，并添加方法。也可以继承父类的">
+<meta property="og:description" content="单例一般来说，在iOS的工程中， 通用的tool一般都会设计成单例，这样能保证在程序运行过程中，程序中只有一个单例对象，方便数据的传输和处理。如果为了扩展此单例类，希望在此基础上增加面向各模块专用的单例方法，该如何处理呢。可以采用的方法有两种：  分类：可以针对各个模块创建对应的分类，并添加方法。缺点是不能继承原有单例的属性。 继承：也可以针对各个模块创建出对应的子类，并添加方法。也可以继承父类的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-12T02:11:31.479Z">
+<meta property="og:updated_time" content="2018-09-12T02:17:09.412Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS单例的创建和继承">
-<meta name="twitter:description" content="单例一般来说，在iOS的工程中， 通过的tool一般都会设计成单例，这样能保证在程序运行过程中，程序中只有一个单例对象，方便数据的传输和处理。如果为了扩展此单例类，希望在此基础上增加面向各模块专用的单例方法，该如何处理呢。可以采用的方法有两种：  分类：可以针对各个模块创建对应的分类，并添加方法。缺点是不能继承原有单例的属性。 继承：也可以针对各个模块创建出对应的子类，并添加方法。也可以继承父类的">
+<meta name="twitter:description" content="单例一般来说，在iOS的工程中， 通用的tool一般都会设计成单例，这样能保证在程序运行过程中，程序中只有一个单例对象，方便数据的传输和处理。如果为了扩展此单例类，希望在此基础上增加面向各模块专用的单例方法，该如何处理呢。可以采用的方法有两种：  分类：可以针对各个模块创建对应的分类，并添加方法。缺点是不能继承原有单例的属性。 继承：也可以针对各个模块创建出对应的子类，并添加方法。也可以继承父类的">
 
 
 
@@ -310,7 +310,7 @@
       
 
       
-        <h3 id="单例"><a href="#单例" class="headerlink" title="单例"></a>单例</h3><p>一般来说，在iOS的工程中， 通过的tool一般都会设计成单例，这样能保证在程序运行过程中，程序中只有一个单例对象，方便数据的传输和处理。<br>如果为了扩展此单例类，希望在此基础上增加面向各模块专用的单例方法，该如何处理呢。<br>可以采用的方法有两种：</p>
+        <h3 id="单例"><a href="#单例" class="headerlink" title="单例"></a>单例</h3><p>一般来说，在iOS的工程中， 通用的tool一般都会设计成单例，这样能保证在程序运行过程中，程序中只有一个单例对象，方便数据的传输和处理。<br>如果为了扩展此单例类，希望在此基础上增加面向各模块专用的单例方法，该如何处理呢。<br>可以采用的方法有两种：</p>
 <ul>
 <li>分类：可以针对各个模块创建对应的分类，并添加方法。缺点是不能继承原有单例的属性。</li>
 <li>继承：也可以针对各个模块创建出对应的子类，并添加方法。也可以继承父类的属性。</li>
@@ -324,10 +324,9 @@
 <li>给子类对象添加方法，同样的会<code>-[QYSingleton walk]: unrecognized selector sent to instance 0x6000002212e0</code></li>
 </ul>
 <h3 id="子类的创建方法"><a href="#子类的创建方法" class="headerlink" title="子类的创建方法"></a>子类的创建方法</h3><ul>
-<li>通过<code>alloc</code>、<code>init</code>进行创建<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 父类</span><br><span class="line">   QYSingleton *singleton = [QYSingleton shareSingleton];</span><br><span class="line">   NSLog(@&quot;%@ - %p&quot;, singleton, singleton);</span><br><span class="line">// 方法</span><br><span class="line">   [singleton run];</span><br><span class="line"></span><br><span class="line">   // 打印结果</span><br><span class="line">   单例继承[6181:308541] name: father, age: 30, sex: male - 0x6040000349e0</span><br><span class="line">   单例继承[6220:310333] QYSingleton run</span><br></pre></td></tr></table></figure>
+<li>通过<code>alloc</code>、<code>init</code>进行创建<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">// 父类</span><br><span class="line">   QYSingleton *singleton = [QYSingleton shareSingleton];</span><br><span class="line">   NSLog(@&quot;%@ - %p&quot;, singleton, singleton);</span><br><span class="line">// 方法</span><br><span class="line">   [singleton run];</span><br><span class="line"></span><br><span class="line">   // 打印结果</span><br><span class="line">   单例继承[6181:308541] name: father, age: 30, sex: male - 0x6040000349e0</span><br><span class="line">   单例继承[6220:310333] QYSingleton run</span><br><span class="line"></span><br><span class="line">// 通过alloc、init创建子类</span><br><span class="line">   QYSubSingleton *subSingleton = [[QYSubSingleton alloc] init];</span><br><span class="line">   // 继承的属性</span><br><span class="line">   subSingleton.name = @&quot;subObject&quot;;</span><br><span class="line">   // 子类添加的属性</span><br><span class="line">   subSingleton.hobby = @&quot;游泳&quot;;</span><br><span class="line">   NSLog(@&quot;%@ - %p&quot;, subSingleton, subSingleton);</span><br><span class="line"></span><br><span class="line">   // 继承的方法</span><br><span class="line">   [subSingleton run];</span><br><span class="line">   // 添加的方法</span><br><span class="line">   [subSingleton walk];</span><br><span class="line"></span><br><span class="line">   // 打印的结果</span><br><span class="line">   单例继承[6220:310333] name: subObject, age: 30, sex: male, hobby:游泳 - 0x60000025ad90</span><br><span class="line">   // 调用父类的方法</span><br><span class="line">   单例继承[6220:310333] QYSubSingleton run</span><br><span class="line">// 子类添加的方法</span><br><span class="line">单例继承[6220:310333] QYSubSingleton walk</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// 通过alloc、init进行创建</span><br><span class="line">   QYSubSingleton *subSingleton = [[QYSubSingleton alloc] init];</span><br><span class="line">   // 继承的属性</span><br><span class="line">   subSingleton.name = @&quot;subObject&quot;;</span><br><span class="line">   // 子类添加的属性</span><br><span class="line">   subSingleton.hobby = @&quot;游泳&quot;;</span><br><span class="line">   NSLog(@&quot;%@ - %p&quot;, subSingleton, subSingleton);</span><br><span class="line"></span><br><span class="line">   // 继承的方法</span><br><span class="line">   [subSingleton run];</span><br><span class="line">   // 添加的方法</span><br><span class="line">   [subSingleton walk];</span><br><span class="line"></span><br><span class="line">   // 打印的结果</span><br><span class="line">   单例继承[6220:310333] name: subObject, age: 30, sex: male, hobby:游泳 - 0x60000025ad90</span><br><span class="line">   // 调用父类的方法</span><br><span class="line">   单例继承[6220:310333] QYSubSingleton run</span><br><span class="line">// 子类添加的方法</span><br><span class="line">单例继承[6220:310333] QYSubSingleton walk</span><br></pre></td></tr></table></figure>
 <p>由打印可知，这样才能创建出新的子类对象，并且可以更改父类的初始属性，添加新的属性和方法</p>
 <ul>
 <li>给子类添加单例的方法进行创建  <ul>
